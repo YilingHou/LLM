@@ -1,0 +1,41 @@
+1. Problem Statement
+The goal is to generate sentences given the first few words. The model achieve this by generating the next word based on previous words.
+
+2. Data Description
+The dataset used in this project is obtained from the Brown Corpus, specifically the 'news' category. It consists of the first 1000 words from this category. Preprocessing steps include converting words to lowercase, removing stopwords from the English language corpus and tokenization.
+
+3. RNN Architecture 
+    1. Embedding Layer: The first layer in the model, Converts input sequences into dense vectors of fixed size (embedding_dim = 10).
+    2. LSTM Layer: Added after the embedding layer. It is a type of RNN layer to learn long term dependencies in sequential data. The number of neurons is 50.
+    3. Dense Layer: Added after the LSTM layer. It is a fully connected layer where each neuron is connected to every neuron in the previous layer, associated with weight, bias and softmax activation function to output probabilities for each word in the vocabulary.
+
+4. Training Preprocess
+The model is compiled with categorical cross-entropy as the loss function, Adam as the optimizer, batch size 64 and 350 epochs.
+Loss Function: Categorical Cross-Entropy
+    The Categorical Cross-Entropy loss funciton is sensitive to probability distribution differences. It also provides a smooth and differentiable loss function, which is crucial for gradient-based optimization algorithms (e.g., Adam). Therefore, it is a good choice for our next word prediction model.
+Optimizer: Adam
+Batch Size: 64
+    Since my dataset is not very large, i choose the commonly used 64 batch size
+Number of Epochs: 500
+    By testing, the model reaches accuracy about 92% after running 300 epochs, so I choose 500 epochs to make sure it reaches saturate acuracy. The early stopping technique will prevent overfitting resulting from extra epchos. 
+Techniques to prevent overfitting: Early Stopping
+    During training, if the performance starts to degrade, stop training to prevent overfitting.
+
+5. Model Evaluation
+Use perplexity for language models as metrics.
+Output:
+    Average Entropy on Validation Dataset: 1.9816583395004272
+    Feeded sample text: the fulton county grand jury said friday an investigation of atlanta's recent primary election produced `` no evidence '' that any irregularities took place . the jury further said in
+    Generated sentence: the new management takes which its ambiguous in the fulton county court which had been charged by a durwood pye
+The entropy around 1.98 suggests that the model's predictions  depends on the specific context and requirements of the application. However, it is not very accurate. In the example generated sentence, the logic between words is somewaht resonable. but the complete sentence does not make much sense. It is because I am only running it on a small dataset. Training it with larger dataset would give a lower entropy close to 0 and generate better sentences.
+
+7. Discussion
+Traing the model requires a long time, so during construction and testing, it is imoportant to use a relative small dataset. To address overfitting, early stopping was employed during training to monitor the validation loss and stop training when no improvement was observed for a certain number of epochs.
+Potential future work and improvements:
+    Increasing the size and diversity of the training dataset through data augmentation techniques such as text augmentation or using additional corpora.
+    Exploring more sophisticated neural network architectures, such as the attention mechanism, to capture more complex patterns in the text data.
+
+8. Reference
+Slides and notes
+http://introtodeeplearning.com/
+https://deeplearning.mit.edu/
